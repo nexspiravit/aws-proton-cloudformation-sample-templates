@@ -14,7 +14,11 @@ Mappings:
     Private1:
       CIDR: '{{ environment.inputs.private_subnet_one_cidr}}'
     Private2:
-      CIDR: '{{ environment.inputs.private_subnet_two_cidr}}'   
+      CIDR: '{{ environment.inputs.private_subnet_two_cidr}}'  
+    Private3:
+      CIDR: '{{ environment.inputs.private_subnet_three_cidr}}'
+    Private4:
+      CIDR: '{{ environment.inputs.private_subnet_four_cidr}}'  
 
 Resources:
   VPC:
@@ -150,6 +154,57 @@ Resources:
       RouteTableId: !Ref PrivateSubnet2RouteTable
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref PublicSubnet2NATGateway
+  PrivateSubnet3:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: !FindInMap ['SubnetConfig', 'Private3', 'CIDR']
+      VpcId: !Ref VPC
+      AvailabilityZone:
+        Fn::Select:
+         - 0
+         - Fn::GetAZs: {Ref: 'AWS::Region'}
+      MapPublicIpOnLaunch: false
+  PrivateSubnet3RouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+  PrivateSubnet3RouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet3RouteTable
+      SubnetId: !Ref PrivateSubnet3
+  PrivateSubnet3DefaultRoute:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet3RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicSubnet2NATGateway
+  PrivateSubnet4:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      CidrBlock: !FindInMap ['SubnetConfig', 'Private4', 'CIDR']
+      VpcId: !Ref VPC
+      AvailabilityZone:
+        Fn::Select:
+         - 1
+         - Fn::GetAZs: {Ref: 'AWS::Region'}
+      MapPublicIpOnLaunch: false
+  PrivateSubnet4RouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+  PrivateSubnet4RouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet4RouteTable
+      SubnetId: !Ref PrivateSubnet4
+  PrivateSubnet4DefaultRoute:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet4RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicSubnet2NATGateway
+  
   InternetGateway:
     Type: 'AWS::EC2::InternetGateway'
   GatewayAttachement:

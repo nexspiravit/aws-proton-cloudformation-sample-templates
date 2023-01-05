@@ -1,7 +1,9 @@
 proton: EnvironmentSpec
 spec:
-  vpc_cidr: 10.0.0.0/16
-  public_subnet_one_cidr: 10.0.0.0/18
-  public_subnet_two_cidr: 10.0.64.0/18
-  private_subnet_one_cidr: 10.0.128.0/18
-  private_subnet_two_cidr: 10.0.192.0/18
+  vpc_cidr: 10.10.0.0/16
+  public_subnet_one_cidr: 10.10.0.0/19
+  public_subnet_two_cidr: 10.10.32.0/19
+  private_subnet_one_cidr: 10.10.64.0/19
+  private_subnet_two_cidr: 10.10.96.0/19
+  private_subnet_three_cidr: 10.10.128.0/19
+  private_subnet_four_cidr: 10.10.160.0/19
